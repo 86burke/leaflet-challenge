@@ -57,14 +57,6 @@ function createFeatures(earthquakeData) {
 
 function createMap(earthquakes) {
 
-
-  var outdoorsmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
-    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-    maxZoom: 18,
-    id: "mapbox.outdoors",
-    accessToken: API_KEY
-  });
-
   var satellitemap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
     maxZoom: 18,
@@ -79,42 +71,39 @@ function createMap(earthquakes) {
     accessToken: API_KEY
   });
 
-  // Create the faultline layer
+  
   var faultLine = new L.LayerGroup();
   
-  // Define a baseMaps object to hold our base layers
+  
   var baseMaps = {
-    "Outdoor Map": outdoorsmap,
     "Greyscale Map": grayscalemap,
     "Satellite Map": satellitemap
   };
 
-  // Create overlay object to hold our overlay layer
+  
   var overlayMaps = {
     Earthquakes: earthquakes,
     FaultLines: faultLine
   };
 
-  // Create our map, giving it the streetmap and earthquakes layers to display on load
+  
   var myMap = L.map("map", {
     center: [
       37.09, -95.71
     ],
     zoom: 4,
-    layers: [outdoorsmap, earthquakes, faultLine]
+    layers: [earthquakes, faultLine]
   });
 
-  // Create a layer control
-  // Pass in our baseMaps and overlayMaps
-  // Add the layer control to the map
+ 
   L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
   }).addTo(myMap);
 
-  // Query to retrieve the faultline data
+  
   var faultlinequery = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_plates.json";
   
-  // Create the faultlines and add them to the faultline layer
+  
   d3.json(faultlinequery, function(data) {
     L.geoJSON(data, {
       style: function() {
@@ -123,7 +112,7 @@ function createMap(earthquakes) {
     }).addTo(faultLine)
   })
 
-  // color function to be used when creating the legend
+  
   function getColor(d) {
     return d > 5 ? '#ff3333' :
            d > 4  ? '#ff6633' :
@@ -133,8 +122,8 @@ function createMap(earthquakes) {
                     '#ccff33';
   }
 
-// Add legend to the map
-  var legend = L.control({position: 'bottomright'});
+
+  var legend = L.control({position: 'topright'});
   
   legend.onAdd = function (map) {
   
