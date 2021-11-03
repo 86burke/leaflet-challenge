@@ -15,7 +15,7 @@ function createFeatures(earthquakeData) {
   }
 
   function radiusSize(magnitude) {
-    return magnitude * 20000;
+    return magnitude * 15000;
   }
 
 
