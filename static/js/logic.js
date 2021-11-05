@@ -93,7 +93,7 @@ function createMap(earthquakes) {
   }).addTo(myMap);
 
 
-  var faultlinequery = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_plates.json";
+  
 
 
   d3.json(faultlinequery, function (data) {
